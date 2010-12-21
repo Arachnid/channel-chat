@@ -1,0 +1,3 @@
+[submodule "lib/webapp2"]
+	path = lib/webapp2
+	url = https://github.com/moraes/webapp-improved.git
