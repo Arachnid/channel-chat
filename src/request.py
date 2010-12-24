@@ -6,6 +6,7 @@ import handlers
 
 application = webapp2.WSGIApplication([
   Route(r'/', handlers.IndexHandler, 'index'),
+  Route(r'/chat', handlers.ChatPageHandler, 'chat'),
 ])
 
 

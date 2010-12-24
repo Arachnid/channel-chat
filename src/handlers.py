@@ -1,6 +1,8 @@
+from google.appengine.api import users
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import login_required
 
+import broadcast_channel
 import webapp2
 import os
 
@@ -22,8 +24,14 @@ class IndexHandler(webapp2.RequestHandler):
 class ChatPageHandler(webapp2.RequestHandler):
   @login_required
   def get(self):
-    self.render_template('chatpage.html', {})
+    user = users.get_current_user()
+    chan = broadcast_channel.BroadcastChannel.get_or_insert('main')
+    sub = broadcast_channel.Subscriber.create(chan, user.user_id())
+    self.render_template('chatpage.html', {
+        'channel': chan,
+        'subscriber': sub,
+    })
 
   def getRpcUrl(self, action):
     """Returns the URL for the specified action on this chat room."""
-    return self.url_for(action)
+    return self.url_for(
